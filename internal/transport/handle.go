@@ -5,13 +5,33 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+)
+
+var (
+	PORT    string
+	BD_OPEN string
 )
 
 type user struct {
 	Login, Email, Password string
 	Success                bool
+}
+
+func InitConfig() {
+	P, err := os.ReadFile("../../internal/config/port.txt")
+	if err != nil {
+		panic(err)
+	}
+	PORT = string(P)
+
+	B, err := os.ReadFile("../../internal/config/bdOpen.txt")
+	if err != nil {
+		panic(err)
+	}
+	BD_OPEN = string(B)
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +58,7 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if person.Login != "" && person.Email != "" && person.Password != "" {
-		db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/go-reg")
+		db, err := sql.Open("mysql", BD_OPEN)
 		if err != nil {
 			panic(err)
 		}
@@ -66,7 +86,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	login := r.FormValue("login")
 	password := r.FormValue("password")
 	if login != "" && password != "" {
-		db, _ := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/go-reg")
+		db, _ := sql.Open("mysql", BD_OPEN)
 		defer db.Close()
 
 		res, _ := db.Query("SELECT * FROM `users`")
@@ -97,11 +117,12 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 }
 
 func Handlefunc() {
+	InitConfig()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../../web/static"))))
 	http.HandleFunc("/index", index)
 	http.HandleFunc("/registration", registration)
 	http.HandleFunc("/authorization", authorization)
 	http.HandleFunc("/enter_to_acc", enter_to_acc)
 	http.HandleFunc("/created_acc", created_acc)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(PORT, nil)
 }
