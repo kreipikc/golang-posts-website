@@ -3,14 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
+    <link rel="stylesheet" type="text/css" href="../static/style/main-style.css">
     <title>Типа аля сайтик</title>
 </head>
 <body>
-    {{ if .Success }}
-    <div class="text">Добро пожаловать, {{ .Login }}</div>
-    {{ else }}
-    <div class="text">Ошибка авторизации</div>
-    {{ end }}
+    <header>
+        <div class="container">
+            <div class="logo"><a href="/index"><img src="../static/img/logo.png" alt="logo"></a></div>
+            <nav>
+                <ul>
+                    <li><a href="index">Главная</a></li>
+                    <li><a href="post">Посты</a></li>
+                    <li><a href="contact">Контакты</a></li>
+                    <li><a href="about-us">О нас</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="user-container">
+            <div id="id-column">
+                {{ if .Success }}
+                <div class="user-png"><img src="../static/img/user.jpg" alt="user"></div>
+                <div class="name-user">{{ .Login }}</div>
+                {{ else }}
+                <a href="/registration"><div class="user-png"><img src="../static/img/user.jpg" alt="user"></div>
+                <div class="name-user">Unnamed</div></a>
+                {{ end }}
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {{ if .Success }}
+            Добро пожаловать, {{ .Login }}
+            {{ else }}
+            Ошибка авторизации
+            {{ end }}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <p>Created by Kirill Basmanov</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

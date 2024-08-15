@@ -51,6 +51,16 @@ input:focus, textarea:focus {
     outline: 5px solid #616d61;
 }
 
+#pas-block {
+    display: flex;
+    width: 100%;
+}
+
+input#password {
+    width: 80%;
+    margin: 5px 5px 5px 0px;
+}
+
 .reg {
     font-size: 15px;
 }
@@ -75,11 +85,18 @@ input[type="submit"]:hover {
     background-color: #51aab6;;
 }
 
-.text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 124px;
+button#eye {
+    width: 20%;
+    font-size: 16px;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 5px 0px 5px 5px;
+    border: 0px;
+}
+
+#eye img {
+    width: 25px;
+    margin: 5px 0px 0px 0px;
 }
 
 #uncorrect-login {
