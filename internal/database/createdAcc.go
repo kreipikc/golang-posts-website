@@ -5,8 +5,8 @@ import (
 )
 
 type User struct {
-	Login, Email, Password string
-	Success                bool
+	Login, Email, Password, PasswordNew string
+	Success, Error                      bool
 }
 
 func CreatedAcc(person User, BD_OPEN string) bool {

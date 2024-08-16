@@ -14,19 +14,19 @@
             <nav>
                 <ul>
                     <li><a href="index">Главная</a></li>
-                    <li><a href="post">Посты</a></li>
-                    <li><a href="contact">Контакты</a></li>
-                    <li><a href="about-us">О нас</a></li>
+                    <li><a href="index">Посты</a></li>
+                    <li><a href="index">Контакты</a></li>
+                    <li><a href="index">О нас</a></li>
                 </ul>
             </nav>
         </div>
         <div class="user-container">
             <div id="id-column">
                 {{ if .Success }}
-                <div class="user-png"><img src="../static/img/user.jpg" alt="user"></div>
-                <div class="name-user">{{ .Login }}</div>
+                <a href="/settings_user"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
+                <div class="name-user">{{ .Login }}</div></a>
                 {{ else }}
-                <a href="/registration"><div class="user-png"><img src="../static/img/user.jpg" alt="user"></div>
+                <a href="/registration"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
                 <div class="name-user">Unnamed</div></a>
                 {{ end }}
             </div>
@@ -38,7 +38,7 @@
             {{ if .Success }}
             Добро пожаловать, {{ .Login }}
             {{ else }}
-            Ошибка авторизации
+            Ошибка авторизации. <a href="/authorization">Нажми</a>, чтобы зайти!
             {{ end }}
         </div>
     </main>

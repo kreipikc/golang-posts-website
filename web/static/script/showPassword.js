@@ -1,28 +1,32 @@
-function show() {
-    var p = document.getElementById('password');
+function show(name) {
+    var p = document.getElementById(name);
     p.setAttribute('type', 'text');
 }
 
-function hide() {
-    var p = document.getElementById('password');
+function hide(name) {
+    var p = document.getElementById(name);
     p.setAttribute('type', 'password');
 }
 
-function swap() {
-    var p = document.getElementById('img_eye');
-    console.log(p.src)
-    if (p.getAttribute("src") == "../static/img/eye_close.png") p.setAttribute("src", "../static/img/eye_open.png");
-    else p.setAttribute("src", "../static/img/eye_close.png");
-}
+var pwShown1 = 0;
+var pwShown2 = 0;
 
-var pwShown = 0;
-
-document.getElementById("eye").addEventListener("click", function () {
-    if (pwShown == 0) {
-        pwShown = 1;
-        show();
+document.getElementById("eye1").addEventListener("click", function () {
+    if (pwShown1 == 0) {
+        pwShown1 = 1;
+        show('password1');
     } else {
-        pwShown = 0;
-        hide();
+        pwShown1 = 0;
+        hide('password1');
+    }
+}, false);
+
+document.getElementById("eye2").addEventListener("click", function () {
+    if (pwShown2 == 0) {
+        pwShown2 = 1;
+        show('password2');
+    } else {
+        pwShown2 = 0;
+        hide('password2');
     }
 }, false);

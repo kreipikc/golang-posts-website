@@ -10,11 +10,11 @@
 <body>
     <div class="main-div">
         <form action="/enter_to_acc" name="form-enter" method="POST" onsubmit="return validateForm()">
-            <label for="">Войти в аккаут</label>
+            <label>Войти в аккаут</label>
             <input type="text" name="login" id="login" placeholder="login">
-            <div id="pas-block">
-                <input type="password" name="password" id="password" placeholder="password">
-                <button type="button" onClick="swap()" id="eye"><img src="../static/img/eye_close.png" id="img_eye" alt="eye"/></button>
+            <div class="pas-block">
+                <input type="password" name="password" id="password1" placeholder="password" class="password">
+                <button type="button" onClick="swap('img_eye')" id="eye1" class="eye"><img src="../static/img/eye_close.png" id="img_eye" alt="eye"/></button>
             </div>
             <input type="submit" href="/enter_to_acc" value="Войти">
         </form>
@@ -25,6 +25,7 @@
     </div>
 
     <script type="text/javascript" src="../static/script/showPassword.js"></script>
+    <script type="text/javascript" src="../static/script/swap.js"></script>
     <script>
         function validateForm() {
             var login = document.forms["form-enter"]["login"].value;
