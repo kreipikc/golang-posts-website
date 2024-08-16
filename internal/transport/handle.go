@@ -3,10 +3,13 @@ package transport
 import (
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	database "mymodule.com/v2/internal/database"
+	"mymodule.com/v2/internal/servies"
 )
 
 var GLOBAL_PERSON database.User
@@ -61,7 +64,11 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	if existence {
 		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 		GLOBAL_PERSON = person
-		t.Execute(w, person)
+		check := servies.CheckOnDir(GLOBAL_PERSON)
+		if check {
+			GLOBAL_PERSON.Img = true
+		}
+		t.Execute(w, GLOBAL_PERSON)
 	} else {
 		t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
 		t.Execute(w, true)
@@ -95,6 +102,13 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		PasswordNew: r.FormValue("password_new"),
 	}
 	check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
+
+	// Проверка на наличие аватарки по старому имени
+	if servies.CheckOnDir(GLOBAL_PERSON) {
+		os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
+		person_new.Img = true
+	}
+
 	GLOBAL_PERSON = person_new
 	if check {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
@@ -103,6 +117,38 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}
+}
+
+// Страница для настройки аватарки
+func settings_img(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+	t.Execute(w, GLOBAL_PERSON)
+}
+
+// Обновление картинки из settings_img
+func update_img(w http.ResponseWriter, r *http.Request) {
+	r.ParseMultipartForm(10)
+	file, fileHeader, err := r.FormFile("file_input")
+	if err != nil {
+		panic(err)
+	}
+	if fileHeader != nil {
+		defer file.Close()
+		contentType := fileHeader.Header["Content-Type"][0]
+		var osFile *os.File
+		if contentType == "image/jpeg" || contentType == "image/png" {
+			osFile, _ = os.Create(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login))
+		}
+		defer osFile.Close()
+		fileBytes, _ := io.ReadAll(file)
+		osFile.Write(fileBytes)
+
+		GLOBAL_PERSON.Img = true
+	} else {
+		defer file.Close()
+	}
+	t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+	t.Execute(w, GLOBAL_PERSON)
 }
 
 // Обработка
@@ -117,5 +163,7 @@ func Handlefunc() {
 	http.HandleFunc("/settings_user", settings_user)
 	http.HandleFunc("/exit_acc", exit_acc)
 	http.HandleFunc("/update_user", update_user)
+	http.HandleFunc("/settings_img", settings_img)
+	http.HandleFunc("/update_img", update_img)
 	http.ListenAndServe(PORT, nil)
 }

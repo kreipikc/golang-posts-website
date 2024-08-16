@@ -15,17 +15,17 @@
             <div class="logo"><a href="/index"><img src="../static/img/logo.png" alt="logo"></a></div>
             <nav>
                 <ul>
-                    <li><a href="index">Главная</a></li>
-                    <li><a href="index">Посты</a></li>
-                    <li><a href="index">Контакты</a></li>
-                    <li><a href="index">О нас</a></li>
+                    <li><a href="/index">Главная</a></li>
+                    <li><a href="/settings_user">Настройки</a></li>
+                    <li><a href="/index">Контакты</a></li>
+                    <li><a href="/index">О нас</a></li>
                 </ul>
             </nav>
         </div>
         <div class="user-container">
             <div id="id-column">
                 {{ if .Success }}
-                <a href="/settings_user"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
+                <a href="/settings_user"><div class="user-png">{{ if .Img }}<img src="../static/img/profile_img/{{ .Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
                 <div class="name-user">{{ .Login }}</div></a>
                 {{ else }}
                 <a href="/registration"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
@@ -56,12 +56,11 @@
                     {{ end }}
                     <label for="email">Изменить почту</label>
                     <input type="email" name="email" id="email" placeholder="email" value="{{ .Email }}">
-                    <!-- <label for="data">Загрузить аватарку</label> -->
-                    <!-- <input type="file" name="file-input" id="file-input"> -->
+                    <div class="btn-acc-center"><a id="settings-img" href="/settings_img">Поменять аватарку</a></div>
                     <input type="submit" href="/update_user" value="Сохранить">
                 </form>
             </div>
-            <div id="exit-acc-center"><a id="exit-acc" href="/exit_acc">Выйти</a></div>
+            <div class="btn-acc-center"><a id="exit-acc" href="/exit_acc">Выйти из аккаунта</a></div>
             {{ else }}
             <div>Ошибка авторизации. <a href="/authorization">Нажмите</a>, чтобы войти в аккаут.
             {{ end }}

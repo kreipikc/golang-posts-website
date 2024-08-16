@@ -37,7 +37,28 @@ form {
     text-decoration: underline;
 }
 
-#exit-acc-center {
+.btn-acc-center {
     display: flex;
     justify-content: center;
+    width: 100%;
+}
+
+#settings-img {
+    display: inline-block;
+    background: #327c86;
+    color: #fff;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 16px;
+    line-height: 1;
+    width: 70%;
+    padding: 15px;
+    margin: 5px 0px 50px 0px;
+    text-align: center;
+    transition: all ease 0.3s;
+}
+
+#settings-img:hover {
+    background: #51aab6;
 }

@@ -74,14 +74,14 @@ input.password {
 }
 
 input[type="submit"] {
-    background-color: #327c86;
+    background-color: #369142;
     color: white;
     border: 0px;
     transition: all ease 0.15s;
 }
 
 input[type="submit"]:hover {
-    background-color: #51aab6;;
+    background-color: #6cc751;
 }
 
 button.eye {

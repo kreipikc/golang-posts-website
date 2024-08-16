@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
     <link rel="stylesheet" type="text/css" href="../static/style/main-style.css">
-    <title>Типа аля сайтик</title>
+    <link rel="stylesheet" type="text/css" href="../static/style/reg-auto.css">
+    <link rel="stylesheet" type="text/css" href="../static/style/settings_user.css">
+    <title>Настройки аватарки</title>
 </head>
 <body>
     <header>
@@ -36,9 +38,16 @@
     <main>
         <div class="container">
             {{ if .Success }}
-            Добро пожаловать, {{ .Login }}
+            <div class="block-form">
+                <form method="POST" action="/update_img" enctype="multipart/form-data">
+                    <label for="file-input">Загрузить аватарку</label>
+                    <input type="file" name="file_input" id="file_input">
+                    <input type="submit" href="/update_img" value="Сохранить">
+                </form>
+            </div>
+            <div class="btn-acc-center"><a id="exit-acc" href="/settings_user">Отмена</a></div>
             {{ else }}
-            Ошибка авторизации. <a href="/authorization">Нажми</a>, чтобы зайти!
+            <div>Ошибка авторизации. <a href="/authorization">Нажмите</a>, чтобы войти в аккаут.
             {{ end }}
         </div>
     </main>
@@ -50,5 +59,9 @@
             </div>
         </div>
     </footer>
+
+    
+    <script type="text/javascript" src="../static/script/showPassword.js"></script>
+    <script type="text/javascript" src="../static/script/swap.js"></script>
 </body>
 </html>
