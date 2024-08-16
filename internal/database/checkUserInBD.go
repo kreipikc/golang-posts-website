@@ -2,6 +2,7 @@ package database
 
 import "database/sql"
 
+// Проверка пользователя на наличие в БД
 func CheckUserInBD(person User, BD_OPEN string) (User, bool) {
 	if person.Login != "" && person.Password != "" {
 		db, _ := sql.Open("mysql", BD_OPEN)

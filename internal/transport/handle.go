@@ -11,21 +11,25 @@ import (
 
 var GLOBAL_PERSON database.User
 
+// Основная страница
 func index(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
+// Страница с формой регистрацией
 func registration(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
 	t.Execute(w, nil)
 }
 
+// Страница с формой авторизацией
 func authorization(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
 	t.Execute(w, nil)
 }
 
+// Обработка создания нового пользователя
 func created_acc(w http.ResponseWriter, r *http.Request) {
 	person := database.User{
 		Login:    r.FormValue("login"),
@@ -45,6 +49,7 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// Обработка запроса на вход в аккаунт
 func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	person := database.User{
 		Login:    r.FormValue("login"),
@@ -63,11 +68,13 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Страница настроек аккаунта пользователя
 func settings_user(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
+// Выход из аккаунта
 func exit_acc(w http.ResponseWriter, r *http.Request) {
 	GLOBAL_PERSON = database.User{
 		Login:    "",
@@ -79,6 +86,7 @@ func exit_acc(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, nil)
 }
 
+// Обновление данных из settings_user
 func update_user(w http.ResponseWriter, r *http.Request) {
 	person := database.User{
 		Login:       r.FormValue("login"),
@@ -86,9 +94,8 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		Password:    r.FormValue("password_old"),
 		PasswordNew: r.FormValue("password_new"),
 	}
-	fmt.Println(person)
-	check, GLOBAL_PERSON := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
-	fmt.Println("gl", GLOBAL_PERSON)
+	check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
+	GLOBAL_PERSON = person_new
 	if check {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 		t.Execute(w, GLOBAL_PERSON)
@@ -98,6 +105,7 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Обработка
 func Handlefunc() {
 	InitConfig()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../../web/static"))))

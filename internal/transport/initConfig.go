@@ -2,11 +2,13 @@ package transport
 
 import "os"
 
+// Глобальные перменные конфига
 var (
 	PORT    string
 	BD_OPEN string
 )
 
+// Инициализация данных конфига
 func InitConfig() {
 	P, err := os.ReadFile("../../internal/config/port.txt")
 	if err != nil {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 )
 
+// Обновление данных из settings_user
 func UpdataDataAcc(person User, GLOBAL_PERSON User, BD_OPEN string) (bool, User) {
-	fmt.Println(GLOBAL_PERSON)
 	if person.Login != "" && person.Email != "" {
 		db, err := sql.Open("mysql", BD_OPEN)
 		if err != nil {

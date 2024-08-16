@@ -4,11 +4,13 @@ import (
 	"database/sql"
 )
 
+// Структура пользователя
 type User struct {
 	Login, Email, Password, PasswordNew string
 	Success, Error                      bool
 }
 
+// Создания аккаунта
 func CreatedAcc(person User, BD_OPEN string) bool {
 	if person.Login != "" && person.Email != "" && person.Password != "" {
 		db, err := sql.Open("mysql", BD_OPEN)
