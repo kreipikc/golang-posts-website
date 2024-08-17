@@ -9,10 +9,11 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	database "mymodule.com/v2/internal/database"
-	"mymodule.com/v2/internal/servies"
+	servies "mymodule.com/v2/internal/servies"
 )
 
 var GLOBAL_PERSON database.User
+var MAP_LIST_IMG = map[string]bool{"": false}
 
 // Основная страница
 func index(w http.ResponseWriter, r *http.Request) {
@@ -64,8 +65,12 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	if existence {
 		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 		GLOBAL_PERSON = person
-		check := servies.CheckOnDir(GLOBAL_PERSON)
-		if check {
+
+		// Инициализируем папку с аватарками и записываем в глобальную переменную
+		temp := servies.InitMapImg()
+		MAP_LIST_IMG = temp
+
+		if MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)] {
 			GLOBAL_PERSON.Img = true
 		}
 		t.Execute(w, GLOBAL_PERSON)
@@ -102,13 +107,12 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		PasswordNew: r.FormValue("password_new"),
 	}
 	check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
-
 	// Проверка на наличие аватарки по старому имени
-	if servies.CheckOnDir(GLOBAL_PERSON) {
+	if _, ok := MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)]; ok {
 		os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
+		MAP_LIST_IMG[fmt.Sprintf("%s.jpg", person_new.Login)] = true
 		person_new.Img = true
 	}
-
 	GLOBAL_PERSON = person_new
 	if check {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
@@ -128,10 +132,7 @@ func settings_img(w http.ResponseWriter, r *http.Request) {
 // Обновление картинки из settings_img
 func update_img(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10)
-	file, fileHeader, err := r.FormFile("file_input")
-	if err != nil {
-		panic(err)
-	}
+	file, fileHeader, _ := r.FormFile("file_input")
 	if fileHeader != nil {
 		defer file.Close()
 		contentType := fileHeader.Header["Content-Type"][0]
@@ -142,10 +143,9 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 		defer osFile.Close()
 		fileBytes, _ := io.ReadAll(file)
 		osFile.Write(fileBytes)
+		MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)] = true
 
 		GLOBAL_PERSON.Img = true
-	} else {
-		defer file.Close()
 	}
 	t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
 	t.Execute(w, GLOBAL_PERSON)

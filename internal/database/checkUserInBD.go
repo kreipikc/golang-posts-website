@@ -1,6 +1,9 @@
 package database
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
 // Проверка пользователя на наличие в БД
 func CheckUserInBD(person User, BD_OPEN string) (User, bool) {
@@ -8,7 +11,7 @@ func CheckUserInBD(person User, BD_OPEN string) (User, bool) {
 		db, _ := sql.Open("mysql", BD_OPEN)
 		defer db.Close()
 
-		res, _ := db.Query("SELECT * FROM `users`")
+		res, _ := db.Query(fmt.Sprintf("SELECT * FROM `users` WHERE `login` = '%s'", person.Login))
 
 		for res.Next() {
 			var us User
