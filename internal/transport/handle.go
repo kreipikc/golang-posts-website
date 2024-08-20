@@ -17,6 +17,8 @@ var MAP_LIST_IMG = map[string]bool{"": false}
 
 // Основная страница
 func index(w http.ResponseWriter, r *http.Request) {
+	GLOBAL_PERSON.ErrorLogin = false
+	GLOBAL_PERSON.Error = false
 	t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
@@ -42,11 +44,20 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 		Success:  true,
 	}
 
+	checkForLogin := database.CheckUserInBDLogin(person, BD_OPEN)
+	fmt.Println(checkForLogin)
 	checkForVoid := database.CreatedAcc(person, BD_OPEN)
 	if checkForVoid {
-		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
-		GLOBAL_PERSON = person
-		t.Execute(w, person)
+		if !checkForLogin {
+			t := template.Must(template.ParseFiles("../../web/templates/index.html"))
+			GLOBAL_PERSON = person
+			t.Execute(w, GLOBAL_PERSON)
+		} else {
+			person.ErrorLogin = true
+			GLOBAL_PERSON = person
+			t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
+			t.Execute(w, GLOBAL_PERSON)
+		}
 	} else {
 		fmt.Println("Форма имеет пустые значения.")
 	}
@@ -82,6 +93,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 
 // Страница настроек аккаунта пользователя
 func settings_user(w http.ResponseWriter, r *http.Request) {
+	GLOBAL_PERSON.Error = false
 	t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
@@ -106,18 +118,27 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		Password:    r.FormValue("password_old"),
 		PasswordNew: r.FormValue("password_new"),
 	}
-	check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
-	// Проверка на наличие аватарки по старому имени
-	if _, ok := MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)]; ok {
-		os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
-		MAP_LIST_IMG[fmt.Sprintf("%s.jpg", person_new.Login)] = true
-		person_new.Img = true
-	}
-	GLOBAL_PERSON = person_new
-	if check {
-		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
-		t.Execute(w, GLOBAL_PERSON)
+
+	checkForLogin := database.CheckUserInBDLogin(person, BD_OPEN)
+	if !checkForLogin {
+		check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
+		// Проверка на наличие аватарки по старому имени
+		if _, ok := MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)]; ok {
+			os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
+			MAP_LIST_IMG[fmt.Sprintf("%s.jpg", person_new.Login)] = true // Добовляем новую картинку в мапу
+			delete(MAP_LIST_IMG, GLOBAL_PERSON.Login)                    // Удаляем старую картинку из мапы
+			person_new.Img = true
+		}
+		GLOBAL_PERSON = person_new
+		if check {
+			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+			t.Execute(w, GLOBAL_PERSON)
+		} else {
+			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+			t.Execute(w, GLOBAL_PERSON)
+		}
 	} else {
+		GLOBAL_PERSON.ErrorLogin = true
 		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}

@@ -7,7 +7,7 @@ import (
 // Структура пользователя
 type User struct {
 	Login, Email, Password, PasswordNew string
-	Img, Success, Error                 bool
+	Img, Success, Error, ErrorLogin     bool
 }
 
 // Создания аккаунта
