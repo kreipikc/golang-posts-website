@@ -15,7 +15,9 @@ func UpdataDataAcc(person User, GLOBAL_PERSON User, BD_OPEN string) (bool, User)
 
 		defer db.Close()
 
+		// Если происходит смена пароля
 		if person.Password != "" && person.PasswordNew != "" {
+			// Если "старый" пароль совпадает с оригиналом
 			if GLOBAL_PERSON.Password == person.Password {
 				db.Query(fmt.Sprintf("UPDATE `users` SET `login` = '%s', `email` = '%s', `password` ='%s' WHERE `login` = '%s'", person.Login, person.Email, person.PasswordNew, GLOBAL_PERSON.Login))
 				GLOBAL_PERSON = User{
@@ -27,11 +29,11 @@ func UpdataDataAcc(person User, GLOBAL_PERSON User, BD_OPEN string) (bool, User)
 				}
 			} else {
 				GLOBAL_PERSON = User{
-					Login:    GLOBAL_PERSON.Login,
-					Email:    GLOBAL_PERSON.Email,
-					Password: GLOBAL_PERSON.Password,
-					Error:    true,
-					Success:  true,
+					Login:         GLOBAL_PERSON.Login,
+					Email:         GLOBAL_PERSON.Email,
+					Password:      GLOBAL_PERSON.Password,
+					ErrorPassword: true,
+					Success:       true,
 				}
 				return false, GLOBAL_PERSON
 			}
@@ -47,11 +49,11 @@ func UpdataDataAcc(person User, GLOBAL_PERSON User, BD_OPEN string) (bool, User)
 		return true, GLOBAL_PERSON
 	} else {
 		GLOBAL_PERSON = User{
-			Login:    GLOBAL_PERSON.Login,
-			Email:    GLOBAL_PERSON.Email,
-			Password: GLOBAL_PERSON.Password,
-			Error:    true,
-			Success:  true,
+			Login:         GLOBAL_PERSON.Login,
+			Email:         GLOBAL_PERSON.Email,
+			Password:      GLOBAL_PERSON.Password,
+			ErrorPassword: true,
+			Success:       true,
 		}
 		return false, GLOBAL_PERSON
 	}

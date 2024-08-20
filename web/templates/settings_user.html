@@ -54,7 +54,7 @@
                         <input type="password" name="password_new" id="password2" placeholder="Новый пароль" class="password">
                         <button type="button" onClick="swap('img_eye2')" id="eye2" class="eye"><img src="../static/img/eye_close.png" id="img_eye2" alt="eye"/></button>
                     </div>
-                    {{ if .Error }}
+                    {{ if .ErrorPassword }}
                     <div id="uncorrect-password">Неверно введён пароль</div>
                     {{ end }}
                     <label for="email">Изменить почту</label>

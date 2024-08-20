@@ -12,13 +12,14 @@ import (
 	servies "mymodule.com/v2/internal/servies"
 )
 
+// Глобальные перменные
 var GLOBAL_PERSON database.User
 var MAP_LIST_IMG = map[string]bool{"": false}
 
 // Основная страница
 func index(w http.ResponseWriter, r *http.Request) {
 	GLOBAL_PERSON.ErrorLogin = false
-	GLOBAL_PERSON.Error = false
+	GLOBAL_PERSON.ErrorPassword = false
 	t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
@@ -44,9 +45,12 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 		Success:  true,
 	}
 
-	checkForLogin := database.CheckUserInBDLogin(person, BD_OPEN)
+	checkForLogin, _ := database.CheckUserInBDLogin(person, BD_OPEN)
 	checkForVoid := database.CreatedAcc(person, BD_OPEN)
+
+	// Если пользователь ввел все данные
 	if checkForVoid {
+		//Если такого логина ЕЩЁ нет в БД (нет такого логина в БД)
 		if !checkForLogin {
 			t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 			GLOBAL_PERSON = person
@@ -72,6 +76,8 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	person, existence := database.CheckUserInBD(person, BD_OPEN)
+
+	// Если данные верные
 	if existence {
 		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 		GLOBAL_PERSON = person
@@ -92,7 +98,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 
 // Страница настроек аккаунта пользователя
 func settings_user(w http.ResponseWriter, r *http.Request) {
-	GLOBAL_PERSON.Error = false
+	GLOBAL_PERSON.ErrorPassword = false
 	t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
@@ -105,6 +111,7 @@ func exit_acc(w http.ResponseWriter, r *http.Request) {
 		Password: "",
 		Success:  false,
 	}
+
 	t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
 	t.Execute(w, nil)
 }
@@ -118,9 +125,12 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 		PasswordNew: r.FormValue("password_new"),
 	}
 
-	checkForLogin := database.CheckUserInBDLogin(person, BD_OPEN)
-	if !checkForLogin {
+	checkForLogin, tempLogin := database.CheckUserInBDLogin(person, BD_OPEN)
+
+	// Если такого логина ЕЩЁ нет в БД (нет такого логина в БД); Исключение: Используется старый логин, то есть не меняется в настройках при сохранении
+	if !checkForLogin || (checkForLogin && tempLogin == GLOBAL_PERSON.Login) {
 		check, person_new := database.UpdataDataAcc(person, GLOBAL_PERSON, BD_OPEN)
+
 		// Проверка на наличие аватарки по старому имени
 		if _, ok := MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)]; ok {
 			os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
@@ -128,7 +138,10 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 			delete(MAP_LIST_IMG, GLOBAL_PERSON.Login)                    // Удаляем старую картинку из мапы
 			person_new.Img = true
 		}
+
 		GLOBAL_PERSON = person_new
+
+		// Если всё прошло успешно
 		if check {
 			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 			t.Execute(w, GLOBAL_PERSON)
@@ -153,25 +166,34 @@ func settings_img(w http.ResponseWriter, r *http.Request) {
 func update_img(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(10)
 	file, fileHeader, _ := r.FormFile("file_input")
+
+	// Если файл был передан (не был пустым при сохранении)
 	if fileHeader != nil {
 		defer file.Close()
 		contentType := fileHeader.Header["Content-Type"][0]
 		var osFile *os.File
+
+		// Если файл был передан в формате .jpg или .png
 		if contentType == "image/jpeg" || contentType == "image/png" {
 			osFile, _ = os.Create(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login))
-		}
-		defer osFile.Close()
-		fileBytes, _ := io.ReadAll(file)
-		osFile.Write(fileBytes)
-		MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)] = true
+			defer osFile.Close()
 
-		GLOBAL_PERSON.Img = true
+			fileBytes, _ := io.ReadAll(file)
+			osFile.Write(fileBytes)
+
+			MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)] = true
+			GLOBAL_PERSON.Img = true
+		}
+
+		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+		t.Execute(w, GLOBAL_PERSON)
+	} else {
+		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+		t.Execute(w, GLOBAL_PERSON)
 	}
-	t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
-	t.Execute(w, GLOBAL_PERSON)
 }
 
-// Обработка
+// Обработка всех страниц
 func Handlefunc() {
 	InitConfig()
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../../web/static"))))

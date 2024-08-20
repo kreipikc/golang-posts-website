@@ -5,7 +5,8 @@ import (
 	"fmt"
 )
 
-func CheckUserInBDLogin(person User, BD_OPEN string) bool {
+// Проверка на существование пользователя с таким же логином
+func CheckUserInBDLogin(person User, BD_OPEN string) (bool, string) {
 	if person.Login != "" {
 		db, _ := sql.Open("mysql", BD_OPEN)
 		defer db.Close()
@@ -16,9 +17,9 @@ func CheckUserInBDLogin(person User, BD_OPEN string) bool {
 			var us User
 			_ = res.Scan(&us.Login, &us.Email, &us.Password)
 			if us.Login == person.Login {
-				return true
+				return true, us.Login
 			}
 		}
 	}
-	return false
+	return false, ""
 }

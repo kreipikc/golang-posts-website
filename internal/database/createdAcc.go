@@ -6,8 +6,8 @@ import (
 
 // Структура пользователя
 type User struct {
-	Login, Email, Password, PasswordNew string
-	Img, Success, Error, ErrorLogin     bool
+	Login, Email, Password, PasswordNew     string
+	Img, Success, ErrorPassword, ErrorLogin bool
 }
 
 // Создания аккаунта
