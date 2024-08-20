@@ -45,7 +45,6 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	checkForLogin := database.CheckUserInBDLogin(person, BD_OPEN)
-	fmt.Println(checkForLogin)
 	checkForVoid := database.CreatedAcc(person, BD_OPEN)
 	if checkForVoid {
 		if !checkForLogin {
