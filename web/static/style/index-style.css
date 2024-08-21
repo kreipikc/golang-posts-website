@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.welcome-user {
+    justify-content: center;
+    display: flex;
+    font-size: 32px;
+    width: 650px;
+    height: 128px;
+    align-items: center;
+}
+
+.welcome-user a {
+    color: white;
+    text-decoration: none;
+    transition: all ease-in 0.15s;
+}
+
+.welcome-user a:hover {
+    color: rgb(216, 198, 198);
+}

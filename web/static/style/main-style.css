@@ -31,20 +31,13 @@ header .container {
     margin: 0 auto;
 }
 
-#id-column {
-    width: auto;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#id-column a {
+.user-container a {
     color: white;
     text-decoration: none;
     transition: all ease-in 0.15s;
 }
 
-#id-column a:hover {
+.user-container a:hover {
     color: rgb(168, 162, 162);
     text-decoration: none;
 }
@@ -118,4 +111,14 @@ footer .container {
 
 footer {
     flex-shrink: 0;
+}
+
+.contact a {
+    color: white;
+    text-decoration: none;
+    transition: all ease-in 0.15s;
+}
+
+.contact a:hover {
+    color: rgb(216, 198, 198);
 }
