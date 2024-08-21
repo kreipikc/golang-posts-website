@@ -9,12 +9,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	database "mymodule.com/v2/internal/database"
-	servies "mymodule.com/v2/internal/servies"
 )
-
-// Глобальные перменные
-var GLOBAL_PERSON database.User
-var MAP_LIST_IMG = map[string]bool{"": false}
 
 // Основная страница
 func index(w http.ResponseWriter, r *http.Request) {
@@ -82,10 +77,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 		GLOBAL_PERSON = person
 
-		// Инициализируем папку с аватарками и записываем в глобальную переменную
-		temp := servies.InitMapImg()
-		MAP_LIST_IMG = temp
-
+		// Если у пользователя есть загруженная картинка на сервере
 		if MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)] {
 			GLOBAL_PERSON.Img = true
 		}
@@ -112,8 +104,7 @@ func exit_acc(w http.ResponseWriter, r *http.Request) {
 		Success:  false,
 	}
 
-	t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
-	t.Execute(w, nil)
+	http.Redirect(w, r, "/authorization", http.StatusSeeOther)
 }
 
 // Обновление данных из settings_user
@@ -141,7 +132,7 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 
 		GLOBAL_PERSON = person_new
 
-		// Если всё прошло успешно
+		// Если всё прошло успешно (в database.UpdataDataAcc)
 		if check {
 			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
 			t.Execute(w, GLOBAL_PERSON)
@@ -191,21 +182,4 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}
-}
-
-// Обработка всех страниц
-func Handlefunc() {
-	InitConfig()
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../../web/static"))))
-	http.HandleFunc("/index", index)
-	http.HandleFunc("/registration", registration)
-	http.HandleFunc("/authorization", authorization)
-	http.HandleFunc("/enter_to_acc", enter_to_acc)
-	http.HandleFunc("/created_acc", created_acc)
-	http.HandleFunc("/settings_user", settings_user)
-	http.HandleFunc("/exit_acc", exit_acc)
-	http.HandleFunc("/update_user", update_user)
-	http.HandleFunc("/settings_img", settings_img)
-	http.HandleFunc("/update_img", update_img)
-	http.ListenAndServe(PORT, nil)
 }
