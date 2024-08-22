@@ -2,10 +2,10 @@
 This is a site with simulated registration, authorization and profile settings on the site.
 
 ## What languages have I used?
-> Go (golang)
-> JavaScript
-> SQL
-> HTML & CSS
+- Go (golang)
+- JavaScript
+- SQL
+- HTML & CSS
 The server part is written in the Go (golang) programming language  and layout in HTML and CSS with a little JavaScript, SQL is used to work with the database (the database is stored on a local server - phpMyAdmin).
 
 
