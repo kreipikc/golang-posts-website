@@ -37,7 +37,7 @@
             {{ if .Success }}
             <div class="welcome-user">Добро пожаловать,&nbsp<a href="/settings_user">{{ .Login }}</a></div>
             {{ else }}
-            Ошибка авторизации.&nbsp<a href="/authorization">Нажми</a>, чтобы зайти!
+            <div>Ошибка авторизации.&nbsp<a href="/authorization">Нажми</a>, чтобы зайти!</div>
             {{ end }}
         </div>
     </main>

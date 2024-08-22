@@ -19,13 +19,13 @@ func index(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, GLOBAL_PERSON)
 }
 
-// Страница с формой регистрацией
+// Страница с формой регистрации
 func registration(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
 	t.Execute(w, nil)
 }
 
-// Страница с формой авторизацией
+// Страница с формой авторизации
 func authorization(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
 	t.Execute(w, nil)
@@ -45,7 +45,7 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 
 	// Если пользователь ввел все данные
 	if checkForVoid {
-		//Если такого логина ЕЩЁ нет в БД (нет такого логина в БД)
+		// Если такого логина ЕЩЁ нет в БД (нет такого логина в БД)
 		if !checkForLogin {
 			t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 			GLOBAL_PERSON = person
@@ -72,7 +72,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 
 	person, existence := database.CheckUserInBD(person, BD_OPEN)
 
-	// Если данные верные
+	// Если данные верны
 	if existence {
 		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
 		GLOBAL_PERSON = person

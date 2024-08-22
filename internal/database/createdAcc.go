@@ -10,7 +10,7 @@ type User struct {
 	Img, Success, ErrorPassword, ErrorLogin bool
 }
 
-// Создания аккаунта
+// Создание аккаунта
 func CreatedAcc(person User, BD_OPEN string) bool {
 	if person.Login != "" && person.Email != "" && person.Password != "" {
 		db, err := sql.Open("mysql", BD_OPEN)
