@@ -19,6 +19,18 @@ func index(w http.ResponseWriter, r *http.Request) {
 	t.Execute(w, GLOBAL_PERSON)
 }
 
+// Обработка страницы контактов
+func contact(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles("../../web/templates/contact.html"))
+	t.Execute(w, GLOBAL_PERSON)
+}
+
+// Обработка страницы about_us
+func about_us(w http.ResponseWriter, r *http.Request) {
+	t := template.Must(template.ParseFiles("../../web/templates/about_us.html"))
+	t.Execute(w, GLOBAL_PERSON)
+}
+
 // Страница с формой регистрации
 func registration(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
@@ -182,14 +194,4 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}
-}
-
-func contact(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/contact.html"))
-	t.Execute(w, GLOBAL_PERSON)
-}
-
-func about_us(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/about_us.html"))
-	t.Execute(w, GLOBAL_PERSON)
 }
