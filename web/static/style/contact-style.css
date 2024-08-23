@@ -1,0 +1,56 @@
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container a {
+    color: white;
+    text-decoration: none;
+    transition: all ease-in 0.15s;
+}
+
+.container a:hover {
+    color: rgb(216, 198, 198);
+}
+
+#block-img {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#block-img img {
+    width: 300px;
+}
+
+#author-name {
+    margin: 10px;
+    font-size: 32px;
+}
+
+#author-status {
+    color: rgb(190, 173, 173);
+}
+
+.box-info {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0px 0px 0px 100px;
+    font-size: 24px;
+}
+
+.box-info a {
+    color: rgb(216, 198, 198);
+    text-decoration: none;
+    transition: all ease-in 0.15s;
+}
+
+.box-info a:hover {
+    color: rgb(163, 149, 149);
+}
+
+.box-info ul {
+    list-style: katakana-iroha;
+}

@@ -24,5 +24,7 @@ func Handlefunc() {
 	http.HandleFunc("/update_user", update_user)
 	http.HandleFunc("/settings_img", settings_img)
 	http.HandleFunc("/update_img", update_img)
+	http.HandleFunc("/contact", contact)
+	http.HandleFunc("/about_us", about_us)
 	http.ListenAndServe(PORT, nil)
 }

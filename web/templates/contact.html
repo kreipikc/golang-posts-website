@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
     <link rel="stylesheet" type="text/css" href="../static/style/main-style.css">
-    <link rel="stylesheet" type="text/css" href="../static/style/index-style.css">
-    <title>Типа аля сайтик</title>
+    <link rel="stylesheet" type="text/css" href="../static/style/contact-style.css">
+    <title>Контакты</title>
 </head>
 <body>
     <header>
@@ -34,11 +34,18 @@
 
     <main>
         <div class="container">
-            {{ if .Success }}
-            <div class="welcome-user">Добро пожаловать,&nbsp<a href="/settings_user">{{ .Login }}</a></div>
-            {{ else }}
-            <div>Ошибка авторизации.&nbsp<a href="/authorization">Нажмите</a>, чтобы войти в аккаут.</div>
-            {{ end }}
+            <a href="/about_us"><div id="block-img"><img src="../static/img/author.png">
+                <div id="author-name">Кирилл Басманов</div>
+                <div id="author-status">Программист</div>
+            </div></a>
+            <div class="box-info">Для связи со мной вы можете использовать:
+                <ul>
+                    <li>Номер: <a href="">+7 (777) 777-77-77</a></li>
+                    <li>Почта: <a href="">example@gmail.com</a></li>
+                    <li>Телеграм: <a href="https://t.me/kreipikc">t.me/kreipikc</a></li>
+                    <li>GitHub: <a href="https://github.com/kreipikc">github.com/kreipikc</a></li>
+                </ul>
+            </div>
         </div>
     </main>
 
