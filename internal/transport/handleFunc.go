@@ -13,7 +13,7 @@ var MAP_LIST_IMG = servies.InitMapImg() // Глобальная мапа, кот
 // Обработка всех страниц
 func Handlefunc() {
 	InitConfig()
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../../web/static"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 	http.HandleFunc("/index", index)
 	http.HandleFunc("/registration", registration)
 	http.HandleFunc("/authorization", authorization)

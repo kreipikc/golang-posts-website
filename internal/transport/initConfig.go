@@ -10,13 +10,13 @@ var (
 
 // Инициализация данных конфига
 func InitConfig() {
-	P, err := os.ReadFile("../../internal/config/port.txt")
+	P, err := os.ReadFile("internal/config/port.txt")
 	if err != nil {
 		panic(err)
 	}
 	PORT = string(P)
 
-	B, err := os.ReadFile("../../internal/config/bdOpen.txt")
+	B, err := os.ReadFile("internal/config/bdOpen.txt")
 	if err != nil {
 		panic(err)
 	}

@@ -15,31 +15,31 @@ import (
 func index(w http.ResponseWriter, r *http.Request) {
 	GLOBAL_PERSON.ErrorLogin = false
 	GLOBAL_PERSON.ErrorPassword = false
-	t := template.Must(template.ParseFiles("../../web/templates/index.html"))
+	t := template.Must(template.ParseFiles("web/templates/index.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
 // Обработка страницы контактов
 func contact(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/contact.html"))
+	t := template.Must(template.ParseFiles("web/templates/contact.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
 // Обработка страницы about_us
 func about_us(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/about_us.html"))
+	t := template.Must(template.ParseFiles("web/templates/about_us.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
 // Страница с формой регистрации
 func registration(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
+	t := template.Must(template.ParseFiles("web/templates/registration.html"))
 	t.Execute(w, nil)
 }
 
 // Страница с формой авторизации
 func authorization(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
+	t := template.Must(template.ParseFiles("web/templates/authorization.html"))
 	t.Execute(w, nil)
 }
 
@@ -59,13 +59,13 @@ func created_acc(w http.ResponseWriter, r *http.Request) {
 	if checkForVoid {
 		// Если такого логина ЕЩЁ нет в БД (нет такого логина в БД)
 		if !checkForLogin {
-			t := template.Must(template.ParseFiles("../../web/templates/index.html"))
+			t := template.Must(template.ParseFiles("web/templates/index.html"))
 			GLOBAL_PERSON = person
 			t.Execute(w, GLOBAL_PERSON)
 		} else {
 			person.ErrorLogin = true
 			GLOBAL_PERSON = person
-			t := template.Must(template.ParseFiles("../../web/templates/registration.html"))
+			t := template.Must(template.ParseFiles("web/templates/registration.html"))
 			t.Execute(w, GLOBAL_PERSON)
 		}
 	} else {
@@ -86,7 +86,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 
 	// Если данные верны
 	if existence {
-		t := template.Must(template.ParseFiles("../../web/templates/index.html"))
+		t := template.Must(template.ParseFiles("web/templates/index.html"))
 		GLOBAL_PERSON = person
 
 		// Если у пользователя есть загруженная картинка на сервере
@@ -95,7 +95,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 		}
 		t.Execute(w, GLOBAL_PERSON)
 	} else {
-		t := template.Must(template.ParseFiles("../../web/templates/authorization.html"))
+		t := template.Must(template.ParseFiles("web/templates/authorization.html"))
 		t.Execute(w, true)
 	}
 }
@@ -103,7 +103,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 // Страница настроек аккаунта пользователя
 func settings_user(w http.ResponseWriter, r *http.Request) {
 	GLOBAL_PERSON.ErrorPassword = false
-	t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+	t := template.Must(template.ParseFiles("web/templates/settings_user.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
@@ -136,7 +136,7 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 
 		// Проверка на наличие аватарки по старому имени
 		if _, ok := MAP_LIST_IMG[fmt.Sprintf("%s.jpg", GLOBAL_PERSON.Login)]; ok {
-			os.Rename(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", person_new.Login))
+			os.Rename(fmt.Sprintf("web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login), fmt.Sprintf("web/static/img/profile_img/%s.jpg", person_new.Login))
 			MAP_LIST_IMG[fmt.Sprintf("%s.jpg", person_new.Login)] = true // Добовляем новую картинку в мапу
 			delete(MAP_LIST_IMG, GLOBAL_PERSON.Login)                    // Удаляем старую картинку из мапы
 			person_new.Img = true
@@ -146,22 +146,22 @@ func update_user(w http.ResponseWriter, r *http.Request) {
 
 		// Если всё прошло успешно (в database.UpdataDataAcc)
 		if check {
-			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+			t := template.Must(template.ParseFiles("web/templates/settings_user.html"))
 			t.Execute(w, GLOBAL_PERSON)
 		} else {
-			t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+			t := template.Must(template.ParseFiles("web/templates/settings_user.html"))
 			t.Execute(w, GLOBAL_PERSON)
 		}
 	} else {
 		GLOBAL_PERSON.ErrorLogin = true
-		t := template.Must(template.ParseFiles("../../web/templates/settings_user.html"))
+		t := template.Must(template.ParseFiles("web/templates/settings_user.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}
 }
 
 // Страница для настройки аватарки
 func settings_img(w http.ResponseWriter, r *http.Request) {
-	t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+	t := template.Must(template.ParseFiles("web/templates/settings_img.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
@@ -178,7 +178,7 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 
 		// Если файл был передан в формате .jpg или .png
 		if contentType == "image/jpeg" || contentType == "image/png" {
-			osFile, _ = os.Create(fmt.Sprintf("../../web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login))
+			osFile, _ = os.Create(fmt.Sprintf("web/static/img/profile_img/%s.jpg", GLOBAL_PERSON.Login))
 			defer osFile.Close()
 
 			fileBytes, _ := io.ReadAll(file)
@@ -188,10 +188,10 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 			GLOBAL_PERSON.Img = true
 		}
 
-		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+		t := template.Must(template.ParseFiles("web/templates/settings_img.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	} else {
-		t := template.Must(template.ParseFiles("../../web/templates/settings_img.html"))
+		t := template.Must(template.ParseFiles("web/templates/settings_img.html"))
 		t.Execute(w, GLOBAL_PERSON)
 	}
 }
