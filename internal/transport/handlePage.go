@@ -225,11 +225,13 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Страница для создания постов
 func post_page(w http.ResponseWriter, r *http.Request) {
 	t := template.Must(template.ParseFiles("web/templates/post_page.html"))
 	t.Execute(w, GLOBAL_PERSON)
 }
 
+// Запрос на создание поста
 func created_post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		post := database.Posts{

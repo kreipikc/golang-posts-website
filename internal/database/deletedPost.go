@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+// Удаление поста из БД
 func DeletedPost(BD_OPEN string, id int) {
 	db, _ := sql.Open("mysql", BD_OPEN)
 	defer db.Close()

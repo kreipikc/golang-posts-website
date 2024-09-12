@@ -2,12 +2,14 @@ package database
 
 import "database/sql"
 
+// Структура постов
 type Posts struct {
 	Id                          int
 	LoginAuthor, NamePost, Text string
 	ImgPost                     bool
 }
 
+// Инициализирование постов из БД
 func CheckPosts(BD_OPEN string) []Posts {
 	db, _ := sql.Open("mysql", BD_OPEN)
 	defer db.Close()
