@@ -1,0 +1,42 @@
+input, textarea {
+    font-size: 16px;
+    border-radius: 10px;
+    width: 100%;
+    padding: 15px;
+    margin: 5px;
+    border: 0px;
+    background-color: rgb(49, 45, 45);
+    color: white;
+}
+
+textarea {
+    height: 125px;
+    resize: vertical;
+}
+
+input:focus, textarea:focus {
+    outline: 5px solid #131212fa;
+}
+
+input[type="submit"] {
+    background-color: #369142;
+    color: white;
+    border: 0px;
+    transition: all ease 0.15s;
+}
+
+input[type="submit"]:hover {
+    background-color: #6cc751;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    align-items: center;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}

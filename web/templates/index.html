@@ -22,9 +22,10 @@
             </nav>
         </div>
         <div class="user-container">
-            {{ if .Success }}
-            <a href="/settings_user"><div class="user-png">{{ if .Img }}<img src="../static/img/profile_img/{{ .Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
-            <div class="name-user">{{ .Login }}</div></a>
+            {{ if .Person.Success }}
+            <div class="btn-created-post"><a href="/post_page"><img src="../static/img/plus.png" alt="создать"></a></div>
+            <a href="/settings_user"><div class="user-png">{{ if .Person.Img }}<img src="../static/img/profile_img/{{ .Person.Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
+            <div class="name-user">{{ .Person.Login }}</div></a>
             {{ else }}
             <a href="/registration"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
             <div class="name-user">Unnamed</div></a>
@@ -34,8 +35,25 @@
 
     <main>
         <div class="container">
-            {{ if .Success }}
-            <div class="welcome-user">Добро пожаловать,&nbsp<a href="/settings_user">{{ .Login }}</a></div>
+            {{ if .Person.Success }}
+            <div class="welcome-user">Добро пожаловать,&nbsp<a href="/settings_user">{{ .Person.Login }}</a></div>
+                {{ range .Posts }}
+                <div class="post-box">
+                    <div class="post-head"><img src="../static/img/profile_img/{{ .LoginAuthor }}.jpg" alt="автор:"><span class="login">{{ .LoginAuthor }}</span></div>
+                    <div class="post-body"><h2>{{ .NamePost }}</h2><span class="text">{{ .Text }}<span></div>
+                        {{ if eq .LoginAuthor $.Person.Login }}
+                        <div class="btn-edit-delete">
+                            <form method="POST" action="/deleted_post">
+                                <input type="hidden" id="number" name="number" value="{{ .Id }}">
+                                <button class="btn-del" type="submit"><span class="">Удалить</span></button>
+                            </form>
+                        </div>
+                        {{ end }}
+                </div>
+                {{ else }}
+                <div>Статей нет!</div>
+                {{ end }}
+
             {{ else }}
             <div>Ошибка авторизации.&nbsp<a href="/authorization">Нажмите</a>, чтобы войти в аккаут.</div>
             {{ end }}

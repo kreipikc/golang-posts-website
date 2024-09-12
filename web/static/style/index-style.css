@@ -3,6 +3,15 @@
     justify-content: center;
 }
 
+body {
+    overflow: visible;
+}
+
+main .container {
+    align-items: center;
+    flex-direction: column;
+}
+
 .welcome-user {
     justify-content: center;
     display: flex;
@@ -20,4 +29,83 @@
 
 .welcome-user a:hover {
     color: rgb(216, 198, 198);
+}
+
+.post-box img {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.post-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 500px;
+    max-width: 700px;
+    background-color: #161616;
+    border-radius: 50px;
+    padding: 20px;
+    margin: 15px auto;
+}
+
+.post-head {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.post-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login {
+    margin: 0px 0px 0px 5px;
+}
+
+.text {
+    text-align: justify;
+    font-size: 18px;
+}
+
+.btn-edit-delete {
+    width: 100%;
+}
+
+.btn-edit-delete form {
+    display: flex;
+    width: 100%;
+    justify-content: right;
+}
+
+.btn-del {
+    display: inline-block;
+    background: #b13030;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 15px;
+    text-decoration: none;
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 100;
+    cursor: pointer;
+    transition: all ease-in 0.15s;
+    margin: 0 15px 0 0;
+}
+
+.btn-del:hover {
+    background-color: #d84c4c;
+}
+
+.btn-created-post {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    transition: all ease-in 0.15s;
+}
+
+.btn-created-post:hover {
+    filter: brightness(0.7);
 }

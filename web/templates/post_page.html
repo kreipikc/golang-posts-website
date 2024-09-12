@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="../static/img/logo.png">
+    <link rel="stylesheet" type="text/css" href="../static/style/main-style.css">
+    <link rel="stylesheet" type="text/css" href="../static/style/post-page.css">
+    <title>Создание поста</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo"><a href="/index"><img src="../static/img/logo.png" alt="logo"></a></div>
+            <nav>
+                <ul>
+                    <li><a href="/index">Главная</a></li>
+                    <li><a href="/settings_user">Настройки</a></li>
+                    <li><a href="/contact">Контакты</a></li>
+                    <li><a href="/about_us">О нас</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="user-container">
+            {{ if .Success }}
+            <a href="/settings_user"><div class="user-png">{{ if .Img }}<img src="../static/img/profile_img/{{ .Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
+            <div class="name-user">{{ .Login }}</div></a>
+            {{ else }}
+            <a href="/registration"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
+            <div class="name-user">Unnamed</div></a>
+            {{ end }}
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <form action="/created_post" name="form-post" method="POST" onsubmit="return validateForm()">
+                <input type="text" name="namePost" id="namePost" placeholder="Введите название статьи">
+                <textarea type="text" name="textPost" id="textPost" placeholder="Введите текст"></textarea>
+                <input type="submit" href="/created_post" value="Опубликовать">
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="contact">
+                <p>Created by <a href="/contact">Kirill Basmanov</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function validateForm() {
+            var namePost = document.forms["form-post"]["namePost"].value;
+            var textPost = document.forms["form-post"]["textPost"].value;
+            if (namePost == "" || textPost == "") {
+                alert("Полностью заполните форму");
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
