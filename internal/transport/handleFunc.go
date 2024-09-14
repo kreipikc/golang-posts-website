@@ -29,5 +29,7 @@ func Handlefunc() {
 	http.HandleFunc("/post_page", post_page)
 	http.HandleFunc("/created_post", created_post)
 	http.HandleFunc("/deleted_post", deleted_post)
+	http.HandleFunc("/settings_post", settings_post)
+	http.HandleFunc("/update_post", update_post)
 	http.ListenAndServe(PORT, nil)
 }

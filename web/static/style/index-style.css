@@ -71,32 +71,42 @@ main .container {
 
 .btn-edit-delete {
     width: 100%;
-}
-
-.btn-edit-delete form {
     display: flex;
-    width: 100%;
     justify-content: right;
 }
 
-.btn-del {
+.btn-edit-delete form {
+    margin: 30px 10px 0 0;
+}
+
+.btn-del, .btn-set {
     display: inline-block;
-    background: #b13030;
     color: #fff;
     padding: 12px;
     border: none;
     border-radius: 15px;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1;
     font-weight: 100;
     cursor: pointer;
     transition: all ease-in 0.15s;
-    margin: 0 15px 0 0;
+}
+
+.btn-del {
+    background: #b13030;
 }
 
 .btn-del:hover {
-    background-color: #d84c4c;
+    background-color: #912626;
+}
+
+.btn-set {
+    background: #5360a6;
+}
+
+.btn-set:hover {
+    background: #323963;
 }
 
 .btn-created-post {

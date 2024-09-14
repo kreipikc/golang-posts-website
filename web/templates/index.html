@@ -43,8 +43,13 @@
                     <div class="post-body"><h2>{{ .NamePost }}</h2><span class="text">{{ .Text }}<span></div>
                         {{ if eq .LoginAuthor $.Person.Login }}
                         <div class="btn-edit-delete">
+                            <form method="POST" action="/settings_post">
+                                <input type="hidden" id="number" name="number1" value="{{ .Id }}">
+                                <button class="btn-set" type="submit"><span class="">Редактировать</span></button>
+                            </form>
+
                             <form method="POST" action="/deleted_post">
-                                <input type="hidden" id="number" name="number" value="{{ .Id }}">
+                                <input type="hidden" id="number" name="number2" value="{{ .Id }}">
                                 <button class="btn-del" type="submit"><span class="">Удалить</span></button>
                             </form>
                         </div>

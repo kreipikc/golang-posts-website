@@ -12,9 +12,12 @@ import (
 	database "mymodule.com/v2/internal/database"
 )
 
+// Структура для передаваемых данных
 type IndexData struct {
 	Person database.User
 	Posts  []database.Posts
+	Post   database.Posts
+	Flag   bool
 }
 
 // Основная страница
@@ -104,7 +107,6 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 
 		// Если данные верны
 		if existence {
-			t := template.Must(template.ParseFiles("web/templates/index.html"))
 			GLOBAL_PERSON = person
 			posts := database.CheckPosts(BD_OPEN)
 
@@ -117,6 +119,7 @@ func enter_to_acc(w http.ResponseWriter, r *http.Request) {
 				Person: GLOBAL_PERSON,
 				Posts:  posts,
 			}
+			t := template.Must(template.ParseFiles("web/templates/index.html"))
 			t.Execute(w, data)
 		} else {
 			t := template.Must(template.ParseFiles("web/templates/authorization.html"))
@@ -227,8 +230,12 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 
 // Страница для создания постов
 func post_page(w http.ResponseWriter, r *http.Request) {
+	data := IndexData{
+		Person: GLOBAL_PERSON,
+		Flag:   true,
+	}
 	t := template.Must(template.ParseFiles("web/templates/post_page.html"))
-	t.Execute(w, GLOBAL_PERSON)
+	t.Execute(w, data)
 }
 
 // Запрос на создание поста
@@ -249,9 +256,42 @@ func created_post(w http.ResponseWriter, r *http.Request) {
 // Удаление поста
 func deleted_post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		id := r.FormValue("number")
+		id := r.FormValue("number2")
 		idInt, _ := strconv.Atoi(id)
 		database.DeletedPost(BD_OPEN, idInt)
+		http.Redirect(w, r, "/index", http.StatusSeeOther)
+	}
+}
+
+func settings_post(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		id := r.FormValue("number1")
+		id_int, _ := strconv.Atoi(id)
+
+		post := database.CheckPostsSolo(BD_OPEN, id_int)
+
+		data := IndexData{
+			Person: GLOBAL_PERSON,
+			Flag:   false,
+			Post:   post,
+		}
+		t := template.Must(template.ParseFiles("web/templates/post_page.html"))
+		t.Execute(w, data)
+	}
+}
+
+func update_post(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "POST" {
+		id := r.FormValue("number")
+		id_int, _ := strconv.Atoi(id)
+		post := database.Posts{
+			LoginAuthor: GLOBAL_PERSON.Login,
+			NamePost:    r.FormValue("namePost"),
+			Text:        r.FormValue("textPost"),
+			ImgPost:     false,
+		}
+
+		database.UpdatePost(BD_OPEN, id_int, post)
 		http.Redirect(w, r, "/index", http.StatusSeeOther)
 	}
 }

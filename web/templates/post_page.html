@@ -22,9 +22,9 @@
             </nav>
         </div>
         <div class="user-container">
-            {{ if .Success }}
-            <a href="/settings_user"><div class="user-png">{{ if .Img }}<img src="../static/img/profile_img/{{ .Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
-            <div class="name-user">{{ .Login }}</div></a>
+            {{ if .Person.Success }}
+            <a href="/settings_user"><div class="user-png">{{ if .Person.Img }}<img src="../static/img/profile_img/{{ .Person.Login }}.jpg" alt="user">{{ else }}<img src="../static/img/profile_img/user.jpg" alt="user">{{ end }}</div>
+            <div class="name-user">{{ .Person.Login }}</div></a>
             {{ else }}
             <a href="/registration"><div class="user-png"><img src="../static/img/profile_img/user.jpg" alt="user"></div>
             <div class="name-user">Unnamed</div></a>
@@ -34,11 +34,20 @@
 
     <main>
         <div class="container">
+            {{ if .Flag }}
             <form action="/created_post" name="form-post" method="POST" onsubmit="return validateForm()">
                 <input type="text" name="namePost" id="namePost" placeholder="Введите название статьи">
                 <textarea type="text" name="textPost" id="textPost" placeholder="Введите текст"></textarea>
                 <input type="submit" href="/created_post" value="Опубликовать">
             </form>
+            {{ else }}
+            <form action="/update_post" name="form-post" method="POST" onsubmit="return validateForm()">
+                <input type="hidden" id="number" name="number" value="{{ .Post.Id }}">
+                <input type="text" name="namePost" id="namePost" placeholder="Введите название статьи" value="{{ .Post.NamePost }}">
+                <textarea type="text" name="textPost" id="textPost" placeholder="Введите текст">{{ .Post.Text }}</textarea>
+                <input type="submit" href="/update_post" value="Редактировать">
+            </form>
+            {{ end }}
         </div>
     </main>
 
@@ -55,7 +64,7 @@
             var namePost = document.forms["form-post"]["namePost"].value;
             var textPost = document.forms["form-post"]["textPost"].value;
             if (namePost == "" || textPost == "") {
-                alert("Полностью заполните форму");
+                alert("Полностью заполните поля ввода");
                 return false;
             }
         }

@@ -4,12 +4,6 @@ import (
 	"database/sql"
 )
 
-// Структура пользователя
-type User struct {
-	Login, Email, Password, PasswordNew     string
-	Img, Success, ErrorPassword, ErrorLogin bool
-}
-
 // Создание аккаунта
 func CreatedAcc(person User, BD_OPEN string) bool {
 	if person.Login != "" && person.Email != "" && person.Password != "" {

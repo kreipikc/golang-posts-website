@@ -1,5 +1,5 @@
 ## What kind of project is this?
-This is a site with simulated registration, authorization and profile settings on the site.
+This is a site with simulated registration, authorization, profile settings on the site and the ability to post an entry to the main page (the owner has the opportunity to edit or delete the entry).
 
 
 ## What languages have I used?
