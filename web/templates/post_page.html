@@ -34,7 +34,7 @@
 
     <main>
         <div class="container">
-            {{ if .Flag }}
+            {{ if .CreatedOrSetting }}
             <form action="/created_post" name="form-post" method="POST" onsubmit="return validateForm()">
                 <input type="text" name="namePost" id="namePost" placeholder="Введите название статьи">
                 <textarea type="text" name="textPost" id="textPost" placeholder="Введите текст"></textarea>

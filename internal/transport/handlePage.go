@@ -14,10 +14,10 @@ import (
 
 // Структура для передаваемых данных
 type IndexData struct {
-	Person database.User
-	Posts  []database.Posts
-	Post   database.Posts
-	Flag   bool
+	Person           database.User    // Данные о пользователе
+	Posts            []database.Posts // Массив постов
+	Post             database.Posts   // Пост в единичном экземпляре
+	CreatedOrSetting bool             // Тумблер. true - created post; false - setting post
 }
 
 // Основная страница
@@ -231,8 +231,8 @@ func update_img(w http.ResponseWriter, r *http.Request) {
 // Страница для создания постов
 func post_page(w http.ResponseWriter, r *http.Request) {
 	data := IndexData{
-		Person: GLOBAL_PERSON,
-		Flag:   true,
+		Person:           GLOBAL_PERSON,
+		CreatedOrSetting: true,
 	}
 	t := template.Must(template.ParseFiles("web/templates/post_page.html"))
 	t.Execute(w, data)
@@ -263,6 +263,7 @@ func deleted_post(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Страница для обновления данных (настройки) поста
 func settings_post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		id := r.FormValue("number1")
@@ -271,15 +272,16 @@ func settings_post(w http.ResponseWriter, r *http.Request) {
 		post := database.CheckPostsSolo(BD_OPEN, id_int)
 
 		data := IndexData{
-			Person: GLOBAL_PERSON,
-			Flag:   false,
-			Post:   post,
+			Person:           GLOBAL_PERSON,
+			CreatedOrSetting: false,
+			Post:             post,
 		}
 		t := template.Must(template.ParseFiles("web/templates/post_page.html"))
 		t.Execute(w, data)
 	}
 }
 
+// Запрос на обновление данных поста
 func update_post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		id := r.FormValue("number")
