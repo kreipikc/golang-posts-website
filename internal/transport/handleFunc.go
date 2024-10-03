@@ -31,5 +31,5 @@ func Handlefunc() {
 	http.HandleFunc("/deleted_post", deleted_post)
 	http.HandleFunc("/settings_post", settings_post)
 	http.HandleFunc("/update_post", update_post)
-	http.ListenAndServe(PORT, nil)
+	http.ListenAndServe(":"+PORT, nil)
 }
