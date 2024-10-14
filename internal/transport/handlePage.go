@@ -9,6 +9,7 @@ import (
 	"strconv"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 	database "mymodule.com/v2/internal/database"
 )
 
@@ -284,8 +285,10 @@ func settings_post(w http.ResponseWriter, r *http.Request) {
 // Запрос на обновление данных поста
 func update_post(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
-		id := r.FormValue("number")
+		vars := mux.Vars(r)
+		id := vars["id"]
 		id_int, _ := strconv.Atoi(id)
+
 		post := database.Posts{
 			LoginAuthor: GLOBAL_PERSON.Login,
 			NamePost:    r.FormValue("namePost"),

@@ -5,6 +5,27 @@ import (
 	"fmt"
 )
 
+// Обновление данных поста по id
+func UpdatePost(BD_OPEN string, id int, post Posts) {
+	db, err := sql.Open("mysql", BD_OPEN)
+	if err != nil {
+		panic(err)
+	}
+
+	defer db.Close()
+
+	res, _ := db.Query(fmt.Sprintf("SELECT * FROM `posts` WHERE `id` = '%d'", id))
+
+	for res.Next() {
+		var pos Posts
+		_ = res.Scan(&pos.Id, &pos.LoginAuthor, &pos.NamePost, &pos.Text, &pos.ImgPost)
+		if pos.LoginAuthor == post.LoginAuthor {
+			db.Query(fmt.Sprintf("UPDATE `posts` SET `LoginAuthor` = '%s', `NamePost` = '%s', `Text` ='%s', `ImgPost` = %d WHERE `id` = %d", post.LoginAuthor, post.NamePost, post.Text, 0, id))
+			return
+		}
+	}
+}
+
 // Обновление данных из settings_user
 func UpdataDataAcc(person User, GLOBAL_PERSON User, BD_OPEN string) (bool, User) {
 	if person.Login != "" && person.Email != "" {

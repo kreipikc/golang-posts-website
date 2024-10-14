@@ -41,8 +41,7 @@
                 <input type="submit" href="/created_post" value="Опубликовать">
             </form>
             {{ else }}
-            <form action="/update_post" name="form-post" method="POST" onsubmit="return validateForm()">
-                <input type="hidden" id="number" name="number" value="{{ .Post.Id }}">
+            <form action="/update_post/{{ .Post.Id }}" name="form-post" method="POST" onsubmit="return validateForm()">
                 <input type="text" name="namePost" id="namePost" placeholder="Введите название статьи" value="{{ .Post.NamePost }}">
                 <textarea type="text" name="textPost" id="textPost" placeholder="Введите текст">{{ .Post.Text }}</textarea>
                 <input type="submit" href="/update_post" value="Редактировать">
