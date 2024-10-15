@@ -19,6 +19,9 @@ func UpdatePost(BD_OPEN string, id int, post Posts) {
 	for res.Next() {
 		var pos Posts
 		_ = res.Scan(&pos.Id, &pos.LoginAuthor, &pos.NamePost, &pos.Text, &pos.ImgPost)
+
+		// Если login пользователя, что отправялет запрос, совпадает с login поста
+		// Защита от изменения поста НЕ автора поста
 		if pos.LoginAuthor == post.LoginAuthor {
 			db.Query(fmt.Sprintf("UPDATE `posts` SET `LoginAuthor` = '%s', `NamePost` = '%s', `Text` ='%s', `ImgPost` = %d WHERE `id` = %d", post.LoginAuthor, post.NamePost, post.Text, 0, id))
 			return
